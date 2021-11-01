@@ -1,0 +1,64 @@
+$ sdb-admin stop-node --all
+Continue to stop the node(s) without taking a database snapshot?
+Select 'Y' to stop the node(s) without taking a database snapshot.
+Select 'N' to take a snapshot of all databases and then stop the node(s).
+Taking a database snapshot will reduce the time it takes for the node(s) to recover after being restarted, but may increase the time it takes for the node(s) to stop. [Y/n]: y
+✓ Successfully connected to host <IP Aggrgate Node>
+✓ Successfully connected to host <IP Child Aggrgate Node>
+✓ Successfully connected to host <IP Leaf Node 1>
+✓ Successfully connected to host <IP Leaf Node 2>
+Toolbox is about to perform the following actions:
+  · Stop all nodes in the cluster
+
+Would you like to continue? [y/N]: y
+✓ Stopped Master node on  <IP Aggrgate Node> (1/1)
+✓ Successfully stopped Master node on 1 host
+✓ Stopped Master node
+✓ Stopped Aggregator nodes on <IP Child Aggrgate Node> (1/1)
+✓ Successfully stopped Aggregator nodes on 1 host
+✓ Stopped Aggregator node
+✓ Stopped Leaf nodes on <IP Leaf Node 1> (1/2)
+✓ Stopped Leaf nodes on<IP Leaf Node 2>
+✓ Successfully stopped Leaf nodes on 2 hosts
+✓ Stopped Leaf nodes
+Operation completed successfully
+
+#### Check status of the Nodes
+
+$ sdb-admin list-nodes
++------------+------------+--------------+------+---------------+--------------+---------+----------------+--------------------+--------------+
+| MemSQL ID  |    Role    |     Host     | Port | Process State | Connectable? | Version | Recovery State | Availability Group | Bind Address |
++------------+------------+--------------+------+---------------+--------------+---------+----------------+--------------------+--------------+
+| 78F8618FB5 | Master     | IP           | 3306 | Stopped       | False        | 7.5.6   | Unknown        |                    | 0.0.0.0      |
+| F33CBD6BEA | Aggregator | IP           | 3306 | Stopped       | False        | 7.5.6   | Unknown        |                    | 0.0.0.0      |
+| C1C6B2480E | Leaf       | IP           | 3306 | Stopped       | False        | 7.5.6   | Unknown        |                    | 0.0.0.0      |
+| FC786E7359 | Leaf       | IP           | 3306 | Stopped       | False        | 7.5.6   | Unknown        |                    | 0.0.0.0      |
++------------+------------+--------------+------+---------------+--------------+---------+----------------+--------------------+--------------+
+
+## Check status of the each node using memsql-id 
+
+$ sdb-admin describe-node --memsql-id 78F8618FB5
++--------------------+------------------------------------------------------------------------------+
+| memsqlId           | 78F8618FB56B11D7B1F1F44D5EA330314E07568D                                     |
+| host               | IP of node                                                                   |
+| role               | Master                                                                       |
+| port               | 3306                                                                         |
+| bindAddress        | 0.0.0.0                                                                      |
+| processState       | Stopped                                                                      |
+| version            | 7.5.6                                                                        |
+| memsqlConfig       | /mysql/<db_name>/memsql.cnf                                                  |
+| datadir            | /mysql/<db_name>/data                                                        |
+| plancachedir       | /mysql/<db_name>/plancache                                                   |
+| tracelogsdir       | /mysql/<db_name>/tracelogs                                                   |
+| auditlogsdir       | /mysql/<db_name>/auditlogs                                                   |
+| memsqld            | /opt/singlestoredb-server-7.5.6-9e799dbf4f/memsqld                           |
+| nodeID             | --                                                                           |
+| pid                | --                                                                           |
+| dpid               | --                                                                           |
+| autoRestartEnabled | --                                                                           |
+| isConnectable      | --                                                                           |
+| recoveryState      | --                                                                           |
+| availabilityGroup  | --                                                                           |
+| config             | Omitted from table view. Use 'sdb-admin describe-node ... --property config' |
+| variables          | --                                                                           |
++--------------------+------------------------------------------------------------------------------+
